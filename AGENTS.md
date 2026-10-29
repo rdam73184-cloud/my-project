@@ -45,6 +45,9 @@ links.
   (`//host/…`) and non-http schemes are rejected.
 - Video files dropped into `web/public/videos/` are gitignored (large binaries);
   commit only the README there.
+- The frame follows the video's intrinsic ratio (`width: auto; max-height: min(78vh, 660px)`),
+  so a vertical phone clip is shown whole instead of letterboxed in a 16:9 box; only the
+  empty placeholder uses a fixed 16:9 box.
 - `settings.hero_image_url` is the portrait shown in the «درباره من» section.
 
 ## Migrations

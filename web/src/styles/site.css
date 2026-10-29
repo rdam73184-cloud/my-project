@@ -153,12 +153,16 @@
 }
 
 .hero-stage {
+  display: flex;
+  justify-content: center;
   width: 100%;
   max-width: 980px;
 }
 
 .video-frame {
   position: relative;
+  width: fit-content;
+  max-width: 100%;
   margin: 0;
   padding: 3px;
   border-radius: 28px;
@@ -166,16 +170,21 @@
   box-shadow: 0 40px 90px rgba(76, 43, 168, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 
+/* The frame follows the video's own ratio, so a vertical phone clip is not
+   letterboxed inside a wide 16:9 box. */
 .video-player {
   display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(78vh, 660px);
   border-radius: 25px;
   background: #06050b;
   object-fit: contain;
 }
 
 .video-frame-empty {
+  width: 100%;
   background: linear-gradient(150deg, rgba(167, 139, 250, 0.5), rgba(34, 211, 238, 0.2) 60%, transparent);
 }
 
