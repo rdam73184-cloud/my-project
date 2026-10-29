@@ -1,23 +1,25 @@
-# Tasks — fullstack demo
+# وب‌سایت شخصی رضا مصدق
 
-A small fullstack task app: React + Vite frontend, Express API, PostgreSQL.
+سایت معرفی شخصی، اپلیکیشن‌ها، پروژه‌های هوش مصنوعی، خدمات و گالری — فارسی و راست‌چین.
+React + Vite در `web/`، Express در `api/` و PostgreSQL برای ذخیره محتوا.
 
-## Run it
+## اجرا
 
 ```bash
 docker compose -f docker-compose.base44.yml up -d --build
-open http://localhost:3000
 ```
 
-The frontend dev server runs on host port 3000 and proxies `/api` to the API
-service, so there is a single origin and no CORS setup.
+- سایت: `http://localhost:3000`
+- پنل مدیریت: `http://localhost:3000/admin`
 
-## Layout
+بار اول که `/admin` را باز می‌کنید، از شما خواسته می‌شود برای خودتان یک رمز عبور
+تعیین کنید. آن رمز به‌صورت هش (bcrypt) در پایگاه داده ذخیره می‌شود.
 
-| Path | What |
-| --- | --- |
-| `web/` | Vite + React frontend (dev server, live reload) |
-| `api/` | Express API, `node --watch` for live reload |
-| `api/db/migrations/` | SQL migrations applied by the `migrate` service |
+## محتوا
 
-See `AGENTS.md` for setup details and verification commands.
+همه محتوای سایت (اپلیکیشن‌ها، پروژه‌های هوش مصنوعی، پروژه‌های آینده، گالری، اطلاعات
+تماس و شبکه‌های اجتماعی) از پنل مدیریت ویرایش می‌شود و در PostgreSQL ذخیره می‌شود.
+تا زمانی که لینک واقعی (مثلاً صفحه مایکت) یا اطلاعات تماس ثبت نشود، سایت هیچ لینک
+جعلی نمایش نمی‌دهد و دکمه‌های مربوطه غیرفعال هستند.
+
+جزئیات فنی و راهنمای بررسی در `AGENTS.md` آمده است.

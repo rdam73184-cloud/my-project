@@ -38,6 +38,10 @@ services:
     image: node:22
     restart: on-failure
     working_dir: /app
+    env_file:
+      # Development placeholder first; platform-provided secrets override it.
+      - ./.env.base44-defaults
+      - /run/base44/app.env
     environment:
       - NODE_ENV=development
       - PORT=4000
