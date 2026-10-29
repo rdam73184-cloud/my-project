@@ -1,16 +1,18 @@
-export default function Hero({ heroImageUrl }) {
+import HeroVideo from './HeroVideo.jsx';
+
+export default function Hero({ videoUrl, posterUrl }) {
   return (
     <section className="hero" id="top">
       <div className="hero-aurora" aria-hidden="true" />
-      <div className="container hero-grid">
+      <div className="container hero-stack">
         <div className="hero-copy reveal">
           <span className="eyebrow">سازنده اپلیکیشن و فعال در حوزه فناوری و هوش مصنوعی</span>
           <h1>
-            سلام، من <span className="gradient-text">رضا مصدق</span> هستم
+            به وب‌سایت رسمی <span className="gradient-text">رضا مصدق</span> خوش آمدید
           </h1>
           <p className="lead">
-            به دنیای فناوری، ساخت اپلیکیشن و هوش مصنوعی خوش آمدید. اینجا می‌توانید با
-            پروژه‌ها، ایده‌ها و فعالیت‌های من آشنا شوید.
+            اینجا دنیای اپلیکیشن‌ها، فناوری، هوش مصنوعی و پروژه‌های من است. با محصولات و
+            فعالیت‌های من آشنا شوید.
           </p>
           <div className="hero-actions">
             <a className="btn btn-primary" href="#apps">
@@ -22,17 +24,7 @@ export default function Hero({ heroImageUrl }) {
           </div>
         </div>
 
-        <div className="hero-media reveal">
-          <div className="hero-frame">
-            {heroImageUrl ? (
-              <img src={heroImageUrl} alt="رضا مصدق" />
-            ) : (
-              <div className="hero-frame-empty">تصویر معرفی</div>
-            )}
-          </div>
-          <span className="hero-chip chip-a">اپلیکیشن</span>
-          <span className="hero-chip chip-b">هوش مصنوعی</span>
-        </div>
+        <HeroVideo videoUrl={videoUrl} posterUrl={posterUrl} />
       </div>
     </section>
   );

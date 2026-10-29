@@ -27,6 +27,16 @@ export function optionalUrl(value) {
   return isHttpUrl(value) ? value.trim() : null;
 }
 
+// Media may be an absolute http(s) URL or a path served by the site itself
+// (e.g. /videos/intro.mp4). Protocol-relative and script URLs are rejected.
+export function mediaUrl(value) {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  if (trimmed.startsWith('/') && !trimmed.startsWith('//')) return trimmed;
+  return isHttpUrl(trimmed) ? trimmed : null;
+}
+
 export function toSortOrder(value) {
   const number = Number(value);
   return Number.isFinite(number) ? Math.trunc(number) : 0;

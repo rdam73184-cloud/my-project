@@ -27,12 +27,32 @@ All editable content lives in Postgres:
 | --- | --- |
 | `projects` (`category`: `app` \| `ai` \| `future`) | apps, AI projects, future projects |
 | `gallery_images` | gallery grid + lightbox |
-| `settings` (single row, id = 1) | hero image, contact email, socials, admin password hash |
+| `settings` (single row, id = 1) | hero video + poster, about photo, contact email, socials, admin password hash |
 | `contact_messages` | contact form inbox in the admin panel |
 
 `status` is `published` \| `in_development` \| `concept`; the public site never
 labels a non-published item as released. A project without `link_url` renders a
-disabled button plus a note — the site never invents store or social links.
+disabled «به‌زودی» button plus a note — the site never invents store or social
+links.
+
+## Hero video
+
+- The hero plays `settings.hero_video_url` through a native `<video controls>`
+  element (play/pause, volume, fullscreen, no autoplay). With no URL stored the
+  hero shows a labelled empty frame — there is deliberately no sample video.
+- `mediaUrl()` accepts an absolute http(s) URL or a site-relative path
+  (`/videos/intro.mp4`, served from `web/public/videos/`). Protocol-relative
+  (`//host/…`) and non-http schemes are rejected.
+- Video files dropped into `web/public/videos/` are gitignored (large binaries);
+  commit only the README there.
+- `settings.hero_image_url` is the portrait shown in the «درباره من» section.
+
+## Migrations
+
+`003_hero_video.sql` adds the video columns and seeds the two app cards
+(Afghan Echo → published on Myket, Royal Ludo → in development). It re-runs on
+every boot, so its `UPDATE`s are guarded by the pre-existing values and never
+overwrite what an admin changed later.
 
 ## Admin auth
 

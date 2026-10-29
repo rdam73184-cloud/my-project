@@ -3,7 +3,7 @@ import { CheckIcon } from './icons.jsx';
 
 const FOCUS = ['ساخت اپلیکیشن موبایل', 'توسعه ایده‌های دیجیتال', 'فناوری و هوش مصنوعی'];
 
-export default function About() {
+export default function About({ imageUrl }) {
   return (
     <section className="section" id="about">
       <div className="container about-grid">
@@ -20,6 +20,13 @@ export default function About() {
         </div>
 
         <aside className="focus-card reveal">
+          <div className="about-photo">
+            {imageUrl ? (
+              <img src={imageUrl} alt="رضا مصدق" loading="lazy" />
+            ) : (
+              <span className="about-photo-empty">عکس معرفی</span>
+            )}
+          </div>
           <h3>حوزه‌های فعالیت</h3>
           <ul>
             {FOCUS.map((item) => (

@@ -24,7 +24,11 @@ export default function Apps({ apps }) {
               </div>
 
               <h3>{app.title}</h3>
-              {app.subtitle && <p className="app-subtitle" dir="ltr">{app.subtitle}</p>}
+              {app.subtitle && (
+                <p className="app-subtitle" dir="ltr">
+                  {app.subtitle}
+                </p>
+              )}
               <p className="app-desc">{app.description}</p>
 
               {app.linkUrl ? (
@@ -39,11 +43,11 @@ export default function Apps({ apps }) {
               ) : (
                 <div className="btn-stack">
                   <button type="button" className="btn btn-muted btn-sm" disabled>
-                    {app.linkLabel || (app.status === 'published' ? 'مشاهده در مایکت' : 'به‌زودی منتشر می‌شود')}
+                    {app.status === 'published' ? 'لینک دانلود ثبت نشده است' : 'به‌زودی'}
                   </button>
                   <span className="hint">
                     {app.status === 'published'
-                      ? 'لینک فروشگاه به‌زودی از طرف مدیریت اضافه می‌شود.'
+                      ? 'لینک فروشگاه هنوز از طرف مدیریت ثبت نشده است.'
                       : 'این اپلیکیشن هنوز منتشر نشده است.'}
                   </span>
                 </div>

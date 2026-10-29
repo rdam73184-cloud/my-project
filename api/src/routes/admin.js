@@ -16,6 +16,7 @@ import {
   cleanText,
   isHttpUrl,
   isValidEmail,
+  mediaUrl,
   optionalUrl,
   toSortOrder,
 } from '../lib/validate.js';
@@ -49,6 +50,8 @@ async function readAdminSettings() {
     `SELECT admin_password_hash AS "adminPasswordHash",
             contact_email AS "contactEmail",
             hero_image_url AS "heroImageUrl",
+            hero_video_url AS "heroVideoUrl",
+            hero_video_poster_url AS "heroVideoPosterUrl",
             socials
      FROM settings WHERE id = 1`,
   );
@@ -148,6 +151,26 @@ router.patch('/settings', async (req, res) => {
     }
     values.push(url);
     updates.push(`hero_image_url = $${values.length}`);
+  }
+
+  if ('heroVideoUrl' in body) {
+    const url = mediaUrl(body.heroVideoUrl);
+    if (body.heroVideoUrl && !url) {
+      res.status(400).json({ error: 'آدرس ویدئو باید با http یا https یا / شروع شود.' });
+      return;
+    }
+    values.push(url);
+    updates.push(`hero_video_url = $${values.length}`);
+  }
+
+  if ('heroVideoPosterUrl' in body) {
+    const url = mediaUrl(body.heroVideoPosterUrl);
+    if (body.heroVideoPosterUrl && !url) {
+      res.status(400).json({ error: 'آدرس تصویر پیش‌نمایش ویدئو معتبر نیست.' });
+      return;
+    }
+    values.push(url);
+    updates.push(`hero_video_poster_url = $${values.length}`);
   }
 
   if ('socials' in body) {

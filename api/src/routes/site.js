@@ -13,16 +13,28 @@ export const GALLERY_COLUMNS = `id, title, image_url AS "imageUrl", sort_order A
 
 export async function readSettings() {
   const { rows } = await pool.query(
-    `SELECT contact_email AS "contactEmail", hero_image_url AS "heroImageUrl", socials
+    `SELECT contact_email AS "contactEmail", hero_image_url AS "heroImageUrl",
+            hero_video_url AS "heroVideoUrl",
+            hero_video_poster_url AS "heroVideoPosterUrl", socials
      FROM settings WHERE id = 1`,
   );
-  return rows[0] ?? { contactEmail: null, heroImageUrl: null, socials: [] };
+  return (
+    rows[0] ?? {
+      contactEmail: null,
+      heroImageUrl: null,
+      heroVideoUrl: null,
+      heroVideoPosterUrl: null,
+      socials: [],
+    }
+  );
 }
 
 export function publicSettings(settings) {
   return {
     contactEmail: settings.contactEmail ?? null,
     heroImageUrl: settings.heroImageUrl ?? null,
+    heroVideoUrl: settings.heroVideoUrl ?? null,
+    heroVideoPosterUrl: settings.heroVideoPosterUrl ?? null,
     socials: Array.isArray(settings.socials) ? settings.socials : [],
   };
 }

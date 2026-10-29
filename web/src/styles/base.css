@@ -384,6 +384,17 @@ button {
   line-height: 1.6;
 }
 
+.code-inline {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.86em;
+  direction: ltr;
+  unicode-bidi: embed;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(139, 92, 246, 0.14);
+  border: 1px solid var(--border);
+}
+
 .status {
   display: inline-flex;
   align-items: center;

@@ -3,3 +3,7 @@ dist/
 .env
 .env.local
 *.log
+
+# Locally dropped intro video (large binary) — host it or keep it out of git
+web/public/videos/*
+!web/public/videos/README.md

@@ -48,8 +48,11 @@ export default function Home() {
 
         {!loading && data && (
           <>
-            <Hero heroImageUrl={data.settings.heroImageUrl} />
-            <About />
+            <Hero
+              videoUrl={data.settings.heroVideoUrl}
+              posterUrl={data.settings.heroVideoPosterUrl}
+            />
+            <About imageUrl={data.settings.heroImageUrl} />
             <Apps apps={data.apps} />
             <AIProjects projects={data.aiProjects} />
             <Services onRequest={handleServiceRequest} />

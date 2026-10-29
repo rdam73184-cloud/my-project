@@ -5,6 +5,8 @@ export default function SettingsPanel() {
   const [form, setForm] = useState({
     contactEmail: '',
     heroImageUrl: '',
+    heroVideoUrl: '',
+    heroVideoPosterUrl: '',
     socials: [],
   });
   const [loading, setLoading] = useState(true);
@@ -19,6 +21,8 @@ export default function SettingsPanel() {
       setForm({
         contactEmail: settings.contactEmail ?? '',
         heroImageUrl: settings.heroImageUrl ?? '',
+        heroVideoUrl: settings.heroVideoUrl ?? '',
+        heroVideoPosterUrl: settings.heroVideoPosterUrl ?? '',
         socials: settings.socials ?? [],
       });
       setError('');
@@ -69,11 +73,15 @@ export default function SettingsPanel() {
       const settings = await adminApi.updateSettings({
         contactEmail: form.contactEmail,
         heroImageUrl: form.heroImageUrl,
+        heroVideoUrl: form.heroVideoUrl,
+        heroVideoPosterUrl: form.heroVideoPosterUrl,
         socials: form.socials.filter((item) => item.label.trim() || item.url.trim()),
       });
       setForm({
         contactEmail: settings.contactEmail ?? '',
         heroImageUrl: settings.heroImageUrl ?? '',
+        heroVideoUrl: settings.heroVideoUrl ?? '',
+        heroVideoPosterUrl: settings.heroVideoPosterUrl ?? '',
         socials: settings.socials ?? [],
       });
       setSaved(true);
@@ -113,7 +121,36 @@ export default function SettingsPanel() {
       </label>
 
       <label className="field">
-        <span>آدرس تصویر معرفی (بخش اول صفحه)</span>
+        <span>آدرس ویدئوی معرفی (بخش اول صفحه)</span>
+        <input
+          type="url"
+          value={form.heroVideoUrl}
+          onChange={(e) => update('heroVideoUrl', e.target.value)}
+          dir="ltr"
+          placeholder="https://.../intro.mp4 یا /videos/intro.mp4"
+        />
+      </label>
+      <p className="hint">
+        فایل ویدئو را در پوشه <code className="code-inline">web/public/videos</code> بگذارید و
+        آدرس آن را به شکل <code className="code-inline">/videos/intro.mp4</code> وارد کنید، یا
+        ویدئو را روی یک میزبان فایل آپلود کنید و لینک مستقیم آن را اینجا بنویسید. تا زمانی که
+        این فیلد خالی است، جای ویدئو در صفحه اول خالی می‌ماند و هیچ ویدئوی ساختگی نمایش داده
+        نمی‌شود.
+      </p>
+
+      <label className="field">
+        <span>تصویر پیش‌نمایش ویدئو (اختیاری)</span>
+        <input
+          type="url"
+          value={form.heroVideoPosterUrl}
+          onChange={(e) => update('heroVideoPosterUrl', e.target.value)}
+          dir="ltr"
+          placeholder="https://..."
+        />
+      </label>
+
+      <label className="field">
+        <span>عکس معرفی (بخش درباره من)</span>
         <input
           type="url"
           value={form.heroImageUrl}
