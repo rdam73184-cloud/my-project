@@ -7,3 +7,6 @@ dist/
 # Locally dropped intro video (large binary) — host it or keep it out of git
 web/public/videos/*
 !web/public/videos/README.md
+
+# Admin uploads when the API runs outside Docker (in Compose they live in a volume)
+api/uploads/

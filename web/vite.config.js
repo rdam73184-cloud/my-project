@@ -13,6 +13,11 @@ export default defineConfig({
         target: 'http://api:4000',
         changeOrigin: true,
       },
+      // Images uploaded from the admin panel are served by the API.
+      '/uploads': {
+        target: 'http://api:4000',
+        changeOrigin: true,
+      },
     },
   },
 });

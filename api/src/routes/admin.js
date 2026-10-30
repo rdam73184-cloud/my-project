@@ -340,14 +340,16 @@ router.get('/gallery', async (_req, res) => {
 router.post('/gallery', async (req, res) => {
   const body = req.body ?? {};
   const title = cleanText(body.title, 120);
-  const imageUrl = cleanText(body.imageUrl, 600);
+  // Either an absolute link or a file uploaded from the admin panel
+  // (/uploads/<file>), so both ways of adding an image end up as one URL.
+  const imageUrl = mediaUrl(body.imageUrl);
 
   if (title.length < 2) {
     res.status(400).json({ error: 'عنوان تصویر لازم است.' });
     return;
   }
-  if (!isHttpUrl(imageUrl)) {
-    res.status(400).json({ error: 'آدرس تصویر باید با http یا https شروع شود.' });
+  if (!imageUrl) {
+    res.status(400).json({ error: 'تصویر را بارگذاری کنید یا آدرس http/https وارد کنید.' });
     return;
   }
 
@@ -369,9 +371,9 @@ router.patch('/gallery/:id', async (req, res) => {
     let value;
     if (field === 'sortOrder') value = toSortOrder(body.sortOrder);
     else if (field === 'imageUrl') {
-      value = cleanText(body.imageUrl, 600);
-      if (!isHttpUrl(value)) {
-        res.status(400).json({ error: 'آدرس تصویر باید با http یا https شروع شود.' });
+      value = mediaUrl(body.imageUrl);
+      if (!value) {
+        res.status(400).json({ error: 'تصویر را بارگذاری کنید یا آدرس http/https وارد کنید.' });
         return;
       }
     } else {

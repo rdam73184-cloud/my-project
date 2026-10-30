@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { adminApi } from '../../api.js';
+import { adminApi, uploadImage } from '../../api.js';
 
 const EMPTY_FORM = { title: '', imageUrl: '', sortOrder: 0 };
 
@@ -10,6 +10,7 @@ export default function GalleryPanel() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -31,8 +32,30 @@ export default function GalleryPanel() {
     setForm((current) => ({ ...current, [field]: value }));
   }
 
+  // Uploading fills the same URL field, so either route ends up as one value.
+  async function handleFile(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setBusy(true);
+    setUploading(true);
+    setError('');
+    try {
+      update('imageUrl', await uploadImage(file));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploading(false);
+      setBusy(false);
+      event.target.value = '';
+    }
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
+    if (!form.imageUrl.trim()) {
+      setError('یک فایل تصویر انتخاب کنید یا آدرس تصویر را وارد کنید.');
+      return;
+    }
     setBusy(true);
     setError('');
     const payload = { ...form, sortOrder: Number(form.sortOrder) || 0 };
@@ -65,7 +88,7 @@ export default function GalleryPanel() {
       <div className="panel-head">
         <div>
           <h2>گالری تصاویر</h2>
-          <p>تصاویر را با آدرس اینترنتی (URL) اضافه کنید. تصاویر فعلی نمونه هستند و می‌توانید جایگزینشان کنید.</p>
+          <p>تصویر را با بارگذاری فایل از دستگاه خود یا با وارد کردن آدرس اینترنتی اضافه کنید — یکی از این دو کافی است.</p>
         </div>
         <button
           type="button"
@@ -97,16 +120,29 @@ export default function GalleryPanel() {
           </label>
 
           <label className="field">
-            <span>آدرس تصویر</span>
+            <span>آدرس تصویر (اختیاری)</span>
             <input
-              type="url"
+              type="text"
               value={form.imageUrl}
               onChange={(e) => update('imageUrl', e.target.value)}
-              placeholder="https://..."
+              placeholder="https://…"
               dir="ltr"
-              required
             />
           </label>
+
+          <div className="field">
+            <span>یا بارگذاری فایل تصویر (اختیاری)</span>
+            <input type="file" accept="image/*" onChange={handleFile} disabled={uploading} />
+            <p className="field-hint">
+              حداکثر ۸ مگابایت، JPG یا PNG یا WEBP. پس از بارگذاری، آدرس تصویر خودکار پر می‌شود.
+            </p>
+          </div>
+
+          {uploading && <p className="muted">در حال بارگذاری تصویر…</p>}
+
+          {form.imageUrl && (
+            <img className="upload-preview" src={form.imageUrl} alt="پیش‌نمایش تصویر" />
+          )}
 
           <label className="field field-narrow">
             <span>ترتیب نمایش</span>

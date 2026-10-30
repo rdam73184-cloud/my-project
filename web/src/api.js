@@ -25,6 +25,20 @@ export const getSite = () => request('/site');
 export const sendMessage = (payload) =>
   request('/contact', { method: 'POST', body: JSON.stringify(payload) });
 
+// Multipart upload: no JSON content type, the browser sets the boundary.
+export async function uploadImage(file) {
+  const body = new FormData();
+  body.append('image', file);
+  const response = await fetch('/api/admin/upload', {
+    method: 'POST',
+    body,
+    credentials: 'same-origin',
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error ?? 'بارگذاری تصویر ناموفق بود.');
+  return data.url;
+}
+
 export const adminApi = {
   session: () => request('/admin/session'),
   setup: (password) =>

@@ -50,6 +50,20 @@ links.
   empty placeholder uses a fixed 16:9 box.
 - `settings.hero_image_url` is the portrait shown in the «درباره من» section.
 
+## Image uploads
+
+- `POST /api/admin/upload` (multipart field `image`, admin session required) stores a
+  file in `UPLOAD_DIR` (default `/app/uploads`, the `uploads_data` Compose volume) and
+  returns `{ "url": "/uploads/<file>" }`. The API serves that path with
+  `express.static`; Vite proxies `/uploads` to `api:4000` too, so one origin still
+  serves both. Uploaded gallery images are public by design.
+- Limits: 8 MB, one file, JPG/PNG/WEBP/GIF/AVIF only (checked by MIME type).
+  `multer` is the only added dependency.
+- The admin gallery accepts either an uploaded file or a pasted http(s) URL: the
+  upload just fills the same `imageUrl` field, and the API validates the column with
+  `mediaUrl()` (absolute URL or a site-relative path starting with a single `/`).
+- Replacing an image does not delete the previous file; the volume keeps orphans.
+
 ## Migrations
 
 `003_hero_video.sql` adds the video columns and seeds the two app cards
