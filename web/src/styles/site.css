@@ -388,6 +388,17 @@
   box-shadow: 0 10px 26px rgba(139, 92, 246, 0.35);
 }
 
+.app-icon {
+  display: block;
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 26px rgba(139, 92, 246, 0.35);
+}
+
 .app-card h3 {
   font-size: 1.32rem;
 }

@@ -246,8 +246,11 @@ function projectPayload(body, { partial = false } = {}) {
 
   if ('linkLabel' in body) values.linkLabel = cleanText(body.linkLabel, 60) || null;
   if ('imageUrl' in body) {
-    values.imageUrl = optionalUrl(body.imageUrl);
-    if (body.imageUrl && !values.imageUrl) errors.imageUrl = 'آدرس تصویر باید با http یا https شروع شود.';
+    // Absolute link or a file uploaded from the admin panel (/uploads/<file>).
+    values.imageUrl = mediaUrl(body.imageUrl);
+    if (body.imageUrl && !values.imageUrl) {
+      errors.imageUrl = 'آدرس تصویر معتبر نیست. یک فایل بارگذاری کنید یا آدرس http/https وارد کنید.';
+    }
   }
   if ('sortOrder' in body) values.sortOrder = toSortOrder(body.sortOrder);
 

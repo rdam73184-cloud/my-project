@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { adminApi } from '../../api.js';
+import { adminApi, uploadImage } from '../../api.js';
 
 const CATEGORIES = [
   { value: 'app', label: 'اپلیکیشن' },
@@ -32,6 +32,7 @@ export default function ProjectsPanel() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -73,6 +74,22 @@ export default function ProjectsPanel() {
 
   function update(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
+  }
+
+  // Uploading fills the same icon field, so either route ends up as one value.
+  async function handleIconFile(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError('');
+    try {
+      update('imageUrl', await uploadImage(file));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploading(false);
+      event.target.value = '';
+    }
   }
 
   async function handleSubmit(event) {
@@ -207,12 +224,12 @@ export default function ProjectsPanel() {
 
           <div className="field-row">
             <label className="field">
-              <span>آدرس تصویر (اختیاری)</span>
+              <span>آیکون اپلیکیشن (اختیاری)</span>
               <input
-                type="url"
+                type="text"
                 value={form.imageUrl}
                 onChange={(e) => update('imageUrl', e.target.value)}
-                placeholder="https://..."
+                placeholder="https://…"
                 dir="ltr"
               />
             </label>
@@ -225,6 +242,23 @@ export default function ProjectsPanel() {
                 onChange={(e) => update('sortOrder', e.target.value)}
               />
             </label>
+          </div>
+
+          <div className="field">
+            <span>یا بارگذاری فایل آیکون (اختیاری)</span>
+            <input type="file" accept="image/*" onChange={handleIconFile} disabled={uploading} />
+            <p className="field-hint">
+              این تصویر بالای نام اپلیکیشن، در کارت آن روی صفحه اصلی نمایش داده می‌شود. یکی از دو
+              راه (فایل یا آدرس) کافی است.
+            </p>
+            {uploading && <p className="muted">در حال بارگذاری آیکون…</p>}
+            {form.imageUrl && (
+              <img
+                className="upload-preview upload-preview-square"
+                src={form.imageUrl}
+                alt="پیش‌نمایش آیکون"
+              />
+            )}
           </div>
 
           <div className="editor-actions">

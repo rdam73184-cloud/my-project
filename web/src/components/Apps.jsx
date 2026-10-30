@@ -17,9 +17,18 @@ export default function Apps({ apps }) {
           {apps.map((app, index) => (
             <article className="app-card reveal" key={app.id} style={{ '--delay': `${index * 60}ms` }}>
               <div className="app-card-top">
-                <span className="app-glyph" aria-hidden="true">
-                  {app.title.trim().charAt(0)}
-                </span>
+                {app.imageUrl ? (
+                  <img
+                    className="app-icon"
+                    src={app.imageUrl}
+                    alt={`آیکون ${app.title}`}
+                    loading="lazy"
+                  />
+                ) : (
+                  <span className="app-glyph" aria-hidden="true">
+                    {app.title.trim().charAt(0)}
+                  </span>
+                )}
                 <StatusPill status={app.status} label={APP_STATUS[app.status]} />
               </div>
 

@@ -63,6 +63,10 @@ links.
   upload just fills the same `imageUrl` field, and the API validates the column with
   `mediaUrl()` (absolute URL or a site-relative path starting with a single `/`).
 - Replacing an image does not delete the previous file; the volume keeps orphans.
+- The projects admin form reuses the same upload for an app's icon (`projects.image_url`,
+  labelled «آیکون اپلیکیشن»). `Apps.jsx` shows it as a 60px rounded image above the app
+  name and falls back to the first letter of the title when no icon is set. The icon is
+  not gated on `status` — it shows whenever it is set.
 
 ## Migrations
 
